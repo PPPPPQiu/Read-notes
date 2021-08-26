@@ -17,7 +17,8 @@ this、super 不能用在 static 方法中
 静态代码块只执行一次  
 
 ### 静态内部类  
-静态内部类与非静态内部类之间存在一个最大的区别: **非静态内部类在编译完成之后会隐含地保存着一个引用，该引用是指向创建它的外围类，但是静态内部类却没有。**  
+静态内部类与非静态内部类之间存在一个最大的区别:  
+**非静态内部类在编译完成之后会隐含地保存着一个引用，该引用是指向创建它的外围类，但是静态内部类却没有。**  
 没有这个引用就意味着：**1. 它的创建是不需要依赖外围类的创建。2. 它不能使用任何外围类的非 static 成员变量和方法。**  
 
 当 Singleton 类加载时，静态内部类 SingletonHolder 没有被加载进内存。只有当调用 getUniqueInstance()方法从而触发 SingletonHolder.INSTANCE 时 SingletonHolder 才会被加载，此时初始化 INSTANCE 实例，并且 JVM 能确保 INSTANCE 只被实例化一次。
@@ -81,11 +82,68 @@ this、super 不能用在 static 方法中
 
 
 
-
-
-
-
 # Java容器  
+
+## Java集合  
+Collection：List，Set，Queue  
+Map：SortedMap（TreeMap），HashMap，HashTable  
+  
+细分：  
+List：Vector（Stack），ArrayList，LinkedList  
+> 有序，可重复  
+
+Set：SortedSet（TreeSet），HashSet，LinkedHashSet  
+> 无序，不可重复  
+
+Queue：Deque（ArrayDeque，LinkedList），PriorityQueue  
+> 有序，可重复  
+
+## List
+### ArrayList  
+数组  
+
+### Vector  
+数组  
+### LinkedList  
+双向链表  
+
+
+## Set
+### HashSet  
+基于 HashMap 实现的  
+> 无序，不可重复  
+
+
+### LinkedHashSet  
+通过 LinkedHashMap 来实现
+
+### TreeSet  
+红黑树
+> 有序，不可重复  
+
+
+
+## Queue  
+### ArrayQueue  
+数组 + 双指针  
+
+### PriorityQueue  
+数组来实现二叉堆  
+
+
+## Map
+### HashMap  
+数组+链表 || 数组+红黑树  
+### LinkedHashMap  
+数组+链表 || 数组+红黑树 的基础上增加了一条双向链表  
+
+
+### Hashtable  
+数组+链表  
+
+
+### TreeMap  
+红黑树（自平衡的排序二叉树）  
 
 
 
