@@ -98,12 +98,38 @@ Set：SortedSet（TreeSet），HashSet，LinkedHashSet
 Queue：Deque（ArrayDeque，LinkedList），PriorityQueue  
 > 有序，可重复  
 
+### 线程安全否？  
+安全：
+- Vector  
+- CopyOnWriteArrayList  
+- ConcurrentHashMap  
+- HashTable  
+不安全：
+- ArrayList   
+- LinkedList  
+- HashSet  
+- TreeSet  
+- HashMap  
+- TreeMap  
+
+
 ## List
 ### ArrayList  
-数组  
+数组，线程不安全    
+#### 扩容：新容量是旧容量的1.5倍  
 
 ### Vector  
-数组  
+数组，线程安全    
+#### 扩容：新容量是旧容量的2倍  
+
+### CopyOnWriteArrayList  
+写操作在一个复制的数组上进行，读操作还是在原始数组中进行，读写分离，互不影响。
+
+写操作需要加锁，防止并发写入时导致写入数据丢失。
+
+写操作结束之后需要把原始数组指向新的复制数组。
+
+
 ### LinkedList  
 双向链表  
 
@@ -128,22 +154,43 @@ Queue：Deque（ArrayDeque，LinkedList），PriorityQueue
 数组 + 双指针  
 
 ### PriorityQueue  
-数组来实现二叉堆  
-
+基于堆结构实现    
+线程不安全  
+- 利用了二叉堆的数据结构来实现的，底层使用可变长的数组来存储数据  
+- 通过堆元素的上浮和下沉，实现了在 O(logn) 的时间复杂度内插入元素和删除堆顶元素  
 
 ## Map
-### HashMap  
-数组+链表 || 数组+红黑树  
-### LinkedHashMap  
-数组+链表 || 数组+红黑树 的基础上增加了一条双向链表  
-
-
-### Hashtable  
-数组+链表  
-
 
 ### TreeMap  
 红黑树（自平衡的排序二叉树）  
+
+### HashMap  
+基于哈希表实现。  
+线程不安全  
+数组+链表 || 数组+红黑树  
+
+#### 扩容：动态扩容，主要参数有：capacity、size、threshold 和 load_factor  
+#### 扩容：新容量是旧容量的2倍  
+
+### ConcurrentHashMap  
+ConcurrentHashMap 在执行 size 操作时先尝试不加锁，如果尝试的次数超过 3 次，就需要对每个 Segment 加锁。  
+#### JDK 1.7 ：分段的数组+链表 ，使用分段锁机制来实现并发更新操作。  
+> 采用了分段锁（Segment），每个分段锁维护着几个桶（HashEntry），多个线程可以同时访问不同分段锁上的桶，从而使其并发度更高。  
+> 并发度就是 Segment 的个数   
+> Segment 继承自 ReentrantLock。  
+#### JDK 1.8 ：数组+链表/红黑二叉树，并发控制使用 synchronized 和 CAS 来操作  
+> 使用了 CAS 操作来支持更高的并发度，在 CAS 操作失败时使用内置锁 synchronized  
+
+### LinkedHashMap  
+使用双向链表来维护元素的顺序  
+数组+链表 || 数组+红黑树 的基础上增加了一条双向链表  
+
+
+### HashTable  
+线程安全，使用 synchronized 来进行同步    
+数组+链表  
+#### 扩容：新容量是旧容量的2n + 1倍  
+
 
 
 
