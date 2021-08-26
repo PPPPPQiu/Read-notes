@@ -35,12 +35,13 @@ CONNECT：要求在与代理服务器通信时建立隧道
 TRACE：追踪路径  
 
 ### GET和POST的区别  
-1. get是获取数据，post是修改数据  
-2. get把请求的数据放在url上， 以?分割URL和传输数据，参数之间以&相连，所以get不太安全。而post把数据放在HTTP的包体内（requrest body）  
-3. get提交的数据最大是2k（ 限制实际上取决于浏览器）， post理论上没有限制。  
-4. GET产生一个TCP数据包，浏览器会把http header和data一并发送出去，服务器响应200(返回数据); POST产生两个TCP数据包，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok(返回数据)。   
-5. GET请求会被浏览器主动缓存，而POST不会，除非手动设置。  
-6. 本质区别：GET是幂等的，而POST不是幂等的  
+1. 作用：get是获取数据，post是传输实体主体 
+2. 参数：get把请求的数据放在url上， 以?分割URL和传输数据，参数之间以&相连，所以get不太安全。而post把数据放在HTTP的包体内（requrest body）  
+3. 大小：get提交的数据最大是2k（ 限制实际上取决于浏览器）， post理论上没有限制。  
+4. 安全：GET安全（只读，不改变服务器状态），POST不安全  
+5. GET产生一个TCP数据包，浏览器会把http header和data一并发送出去，服务器响应200(返回数据); POST产生两个TCP数据包，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok(返回数据)。   
+6. 缓存：GET请求会被浏览器主动缓存，而POST不会，除非手动设置。  
+7. 幂等：本质区别——GET是幂等的，而POST不是幂等的  
 
 
 ### HTTP请求过程包括哪些内容  
