@@ -1,5 +1,5 @@
 # Java并发  
-
+## 线程和进程  
 ### 线程同步的方式  
 1. 信号：类似进程间的信号处理  
 2. 锁机制：互斥锁、读写锁和自旋锁  
@@ -35,6 +35,22 @@
 4. 消息队列  
 5. 信号量  
 6. 套接字  
+
+
+### 线程的生命周期  
+新建，可运行，阻塞，无期限阻塞，限期阻塞，死亡  
+> 有几种阻塞队列？  
+
+### sleep()和wait()的区别    
+sleep()方法会休眠当前正在执行的线程  
+wait()方法使得线程等待某个条件满足，线程在等待时会被挂起，当其他线程的运行使得这个条件满足时，其它线程会调用 notify() 或者 notifyAll() 来唤醒挂起的线程。  
+使用 wait() 挂起期间，线程会释放锁。  
+**wait() 和 sleep() 的区别**  
+- wait() 是 Object 的方法，而 sleep() 是 Thread 的静态方法；  
+- wait() 会释放锁，sleep() 不会。  
+
+### execute()方法和submit()的区别  
+
 
 ## sychronized  
 JVM 实现的 synchronized  
@@ -152,6 +168,11 @@ CPU 密集型简单理解就是利用 CPU 计算能力的任务比如你在内�
 2. 把创建完成的实现 Runnable/Callable接口的 对象直接交给 ExecutorService 执行:   
 3. 如果执行 ExecutorService.submit（…），ExecutorService 将返回一个实现Future接口的对象  
 4. 最后，主线程可以执行 FutureTask.get()方法来等待任务执行完成。主线程也可以执行 FutureTask.cancel来取消此任务的执行。  
+
+
+## Threadlocal  
+还不太清楚  
+
 
 
 ## AQS  
