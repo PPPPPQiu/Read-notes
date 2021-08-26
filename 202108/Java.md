@@ -106,6 +106,7 @@ Queue：Deque（ArrayDeque，LinkedList），PriorityQueue
 - CopyOnWriteArrayList  
 - ConcurrentHashMap  
 - HashTable  
+
 不安全：
 - ArrayList   
 - LinkedList  
