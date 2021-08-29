@@ -98,6 +98,112 @@ JVM 通过该 ACC_SYNCHRONIZED 访问标志来辨别一个方法是否声明为�
 #### 3. ReentrantLock有一些高级功能：等待可中断，可实现公平锁，可实现选择性通知  
 #### 4. 新版本 Java 对 synchronized 进行了很多优化，例如自旋锁等  
 
+> 公平锁是指多个线程在等待同一个锁时，必须按照申请锁的时间顺序来依次获得锁。  
+
+
+## ReentrantLock  
+ReentrantLock 是 java.util.concurrent（J.U.C）包中的锁。  
+一个 ReentrantLock 可以同时绑定多个 Condition 对象。  
+
+# J.U.C   
+## AQS  
+AQS是一个用来构建锁和同步器的框架，这个类在java.util.concurrent.locks包下面。  
+AQS 核心思想是：  
+如果被请求的共享资源空闲，则将当前请求资源的线程设置为有效的工作线程，并且将共享资源设置为锁定状态。  
+如果被请求的共享资源被占用，那么就需要一套线程阻塞等待以及被唤醒时锁分配的机制，这个机制 AQS 是用 CLH 队列锁实现的，即将暂时获取不到锁的线程加入到队列中。  
+
+
+### AQS组件  
+Semaphore(信号量)-允许多个线程同时访问： synchronized 和 ReentrantLock 都是一次只允许一个线程访问某个资源，Semaphore(信号量)可以指定多个线程同时访问某个资源。  
+CountDownLatch （倒计时器）： CountDownLatch 是一个同步工具类，用来协调多个线程之间的同步。这个工具通常用来控制线程等待，它可以让某一个线程等待直到倒计时结束，再开始执行。  
+CyclicBarrier(循环栅栏)： CyclicBarrier 和 CountDownLatch 非常类似，它也可以实现线程间的技术等待，但是它的功能比 CountDownLatch 更加复杂和强大。主要应用场景和 CountDownLatch 类似。       
+它要做的事情是，让一组线程到达一个屏障（也可以叫同步点）时被阻塞，直到最后一个线程到达屏障时，屏障才会开门，所有被屏障拦截的线程才会继续干活。CyclicBarrier 默认的构造方法是 CyclicBarrier(int parties)，其参数表示屏障拦截的线程数量，每个线程调用 await() 方法告诉 CyclicBarrier 我已经到达了屏障，然后当前线程被阻塞。  
+
+### CountDownLatch  
+用来控制一个或者多个线程等待多个线程。
+
+维护了一个计数器 cnt，每次调用 countDown() 方法会让计数器的值减 1，减到 0 的时候，那些因为调用 await() 方法而在等待的线程就会被唤醒。
+
+### CyclicBarrier  
+用来控制多个线程互相等待，只有当多个线程都到达时，这些线程才会继续执行。  
+和 CountdownLatch 相似，都是通过维护计数器来实现的。线程执行 await() 方法之后计数器会减 1，并进行等待，直到计数器为 0，所有调用 await() 方法而在等待的线程才能继续执行。  
+
+CyclicBarrier 和 CountdownLatch 的一个区别是，CyclicBarrier 的计数器通过调用 reset() 方法可以循环使用，所以它才叫做循环屏障。  
+CyclicBarrier 有两个构造函数，其中 parties 指示计数器的初始值，barrierAction 在所有线程都到达屏障的时候会执行一次。  
+
+### Semaphore  
+Semaphore 类似于操作系统中的信号量，可以控制对互斥资源的访问线程数。  
+
+### FutureTask  
+FutureTask 可用于异步获取执行结果或取消执行任务的场景。当一个计算任务需要执行很长时间，那么就可以用 FutureTask 来封装这个任务，主线程在完成自己的任务之后再去获取结果。  
+
+### BlockingQueue  
+- FIFO 队列 ：LinkedBlockingQueue、ArrayBlockingQueue（固定长度）  
+- 优先级队列 ：PriorityBlockingQueue  
+提供了阻塞的 take() 和 put() 方法：如果队列为空 take() 将阻塞，直到队列中有内容；如果队列为满 put() 将阻塞，直到队列有空闲位置。  
+#### 使用 BlockingQueue 实现生产者消费者问题  
+### ForkJoin  
+主要用于并行计算中，和 MapReduce 原理类似，都是把大的计算任务拆分成多个小任务并行计算。  
+
+## Java内存模型  
+## 内存模型三大特性  
+### 原子性  
+被 volatile 修饰的 64 位数据（long，double）的读写操作划分为两次 32 位的操作来进行，即 load、store、read 和 write 操作可以不具备原子性。  
+保证操作的原子性
+#### 1. 使用原子类  
+#### 2. AtomicInteger 能保证多个线程修改的原子性  
+#### 3. 使用 synchronized 互斥锁来保证操作的原子性
+它对应的内存间交互操作为：lock 和 unlock，在虚拟机实现上对应的字节码指令为 monitorenter 和 monitorexit。  
+
+### 可见性  
+可见性指当一个线程修改了共享变量的值，其它线程能够立即得知这个修改。Java 内存模型是通过在变量修改后将新值同步回主内存，在变量读取前从主内存刷新变量值来实现可见性的。  
+
+保证操作的可见性：   
+#### 1. volatile  
+#### 2. synchronized，对一个变量执行 unlock 操作之前，必须把变量值同步回主内存。 
+#### 3. final，被 final 关键字修饰的字段在构造器中一旦初始化完成，并且没有发生 this 逃逸（其它线程通过 this 引用访问到初始化了一半的对象），那么其它线程就能看见 final 字段的值。
+
+### 有序性  
+在本线程内观察，所有操作都是有序的。在一个线程观察另一个线程，所有操作都是无序的，无序是因为发生了指令重排序。  
+#### 1. volatile 关键字通过添加内存屏障的方式来禁止指令重排，即重排序时不能把后面的指令放到内存屏障之前。  
+#### 2. 可以通过 synchronized 来保证有序性，它保证每个时刻只有一个线程执行同步代码，相当于是让线程顺序执行同步代码。  
+
+### 先行发生原则  
+让一个操作无需控制就能先于另一个操作完成。  
+
+1. 单一线程原则  
+2. 管程锁定规则  
+3. volatile 变量规则  
+4. 线程启动规则  
+5. 线程加入原则  
+6. 线程中断规则  
+7. 对象终结规则  
+8. 传递性  
+
+## 线程安全  
+
+### 1. 不可变  
+- final 关键字修饰的基本数据类型  
+- String  
+- 枚举类型  
+- Number 部分子类，如 Long 和 Double 等数值包装类型，BigInteger 和 BigDecimal 等大数据类型。  
+
+### 2. 互斥同步  
+synchronized 和 ReentrantLock。  
+### 3. 非阻塞同步  
+CAS：比较并交换，CAS 指令需要有 3 个操作数，分别是内存地址 V、旧的预期值 A 和新值 B。当执行操作时，只有当 V 的值等于 A，才将 V 的值更新为 B。  
+AtomicInteger：J.U.C 包里面的整数原子类 AtomicInteger 的方法调用了 Unsafe 类的 CAS 操作。  
+
+### 4. 无同步方案  
+栈封闭  
+线程本地存储：可以使用 java.lang.ThreadLocal 类来实现线程本地存储功能。  
+可重入代码  
+
+
+
+
+
+
 ## volatile  
 声明为 volatile ，这就指示 JVM，这个变量是共享且不稳定的，每次使用它都到主存中进行读取。  
 volatile 关键字 除了防止 JVM 的指令重排 ，还有一个重要的作用就是保证变量的可见性。  
@@ -173,19 +279,5 @@ CPU 密集型简单理解就是利用 CPU 计算能力的任务比如你在内�
 ## Threadlocal  
 还不太清楚  
 
-
-
-## AQS  
-AQS是一个用来构建锁和同步器的框架，这个类在java.util.concurrent.locks包下面。  
-AQS 核心思想是：  
-如果被请求的共享资源空闲，则将当前请求资源的线程设置为有效的工作线程，并且将共享资源设置为锁定状态。  
-如果被请求的共享资源被占用，那么就需要一套线程阻塞等待以及被唤醒时锁分配的机制，这个机制 AQS 是用 CLH 队列锁实现的，即将暂时获取不到锁的线程加入到队列中。  
-
-
-### AQS组件  
-Semaphore(信号量)-允许多个线程同时访问： synchronized 和 ReentrantLock 都是一次只允许一个线程访问某个资源，Semaphore(信号量)可以指定多个线程同时访问某个资源。  
-CountDownLatch （倒计时器）： CountDownLatch 是一个同步工具类，用来协调多个线程之间的同步。这个工具通常用来控制线程等待，它可以让某一个线程等待直到倒计时结束，再开始执行。  
-CyclicBarrier(循环栅栏)： CyclicBarrier 和 CountDownLatch 非常类似，它也可以实现线程间的技术等待，但是它的功能比 CountDownLatch 更加复杂和强大。主要应用场景和 CountDownLatch 类似。       
-它要做的事情是，让一组线程到达一个屏障（也可以叫同步点）时被阻塞，直到最后一个线程到达屏障时，屏障才会开门，所有被屏障拦截的线程才会继续干活。CyclicBarrier 默认的构造方法是 CyclicBarrier(int parties)，其参数表示屏障拦截的线程数量，每个线程调用 await() 方法告诉 CyclicBarrier 我已经到达了屏障，然后当前线程被阻塞。  
 
 
