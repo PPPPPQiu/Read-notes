@@ -282,13 +282,43 @@ CPU 密集型简单理解就是利用 CPU 计算能力的任务比如你在内�
 4. 最后，主线程可以执行 FutureTask.get()方法来等待任务执行完成。主线程也可以执行 FutureTask.cancel来取消此任务的执行。  
 
 
-## Threadlocal  
-还不太清楚  
-
 ## Java怎么实现线程  
 ① 继承 Thread 类并重写 run 方法。实现简单，但不符合里氏替换原则，不可以继承其他类。
 
 ② 实现 Runnable 接口并重写 run 方法。避免了单继承局限性，实现解耦。
 
 ③实现 Callable 接口并重写 call 方法。可以获取线程执行结果的返回值，并且可以抛出异常。
+
+
+## Threadlocal  
+Threadlocal，线程的变量副本，每个线程隔离。  
+ThreadLocal对象可以提供线程局部变量，每个线程Thread拥有一份自己的副本变量，多个线程互不干扰。  
+
+### Threadlocal的数据结构 
+Thread类有一个类型为ThreadLocal.ThreadLocalMap的实例变量threadLocals，也就是说每个线程有一个自己的ThreadLocalMap。
+
+ThreadLocalMap有自己的独立实现，可以简单地将它的key视作ThreadLocal，value为代码中放入的值（实际上key并不是ThreadLocal本身，而是它的一个弱引用）。
+
+每个线程在往ThreadLocal里放值的时候，都会往自己的ThreadLocalMap里存，读也是以ThreadLocal作为引用，在自己的map里找对应的key，从而实现了线程隔离。
+
+ThreadLocalMap有点类似HashMap的结构，只是HashMap是由数组+链表实现的，而ThreadLocalMap中并没有链表结构。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
