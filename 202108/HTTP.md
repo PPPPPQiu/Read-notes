@@ -57,7 +57,7 @@ TRACE：追踪路径
 
 ### HTTP首部  
 通用首部字段  
-1. Cache-Control：操作缓存的工作机制
+1. Cache-Control：操作缓存的工作机制  
   缓存请求指令：max-age 响应的最大Age值，min-fresh期望在指定时间内的响应仍有效  no-cache  no-store  
   缓存响应指令：max-age 响应的最大Age值，s-maxage 公共缓存服务器响应的最大Age值  public  private  
 2. Connection：控制不再转发给代理的首部字段，管理持久连接，keep-Alive  
