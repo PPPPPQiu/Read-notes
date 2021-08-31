@@ -192,9 +192,9 @@ ConcurrentHashMap 在执行 size 操作时先尝试不加锁，如果尝试的�
 > 使用了 CAS 操作来支持更高的并发度，在 CAS 操作失败时使用内置锁 synchronized  
 
 ### LinkedHashMap  
-使用双向链表来维护元素的顺序  
-数组+链表 || 数组+红黑树 的基础上增加了一条双向链表  
 
+数组+链表 || 数组+红黑树 的基础上增加了一条双向链表  
+使用双向链表来维护元素的顺序  
 
 ### HashTable  
 线程安全，使用 synchronized 来进行同步    
