@@ -113,6 +113,13 @@ Queue：Deque（ArrayDeque，LinkedList），PriorityQueue
 - CopyOnWriteArrayList  
 - ConcurrentHashMap  
 - HashTable  
+- BlockingQueue  
+- ConcurrentLinkedQueue  
+> 高效的并发队列，链表实现，线程安全的LinkedList，非阻塞队列  
+
+- ConcurrentSkipListMap  
+> 跳表实现，一个Map
+
 
 不安全：
 - ArrayList   
