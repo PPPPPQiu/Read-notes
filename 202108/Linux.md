@@ -1,4 +1,39 @@
 
+默记  
+touch  
+cat  
+tac  
+more  
+less  
+head  
+tail  
+od  
+grep  
+cut  
+uniq  
+tee  
+tr  
+ps  
+pstree  
+top  
+netstat  
+chmod   
+ln   
+ls  
+mkdir  
+rmdir  
+cp   
+mv  
+which  
+whereis  
+locate  
+find  
+gzip  
+pwd  
+ifconfig  
+ping  
+
+
 ## 常用命令  
 - touch：创建文件  
 - cat：取得文件内容  
