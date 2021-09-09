@@ -59,8 +59,9 @@ this、super 不能用在 static 方法中
 ## String  
 ### String StringBuffer 和 StringBuilder 的区别
 - String：不可变，线程安全  
-- StringBuffer：可变，非线程安全  
-- StringBuilder：可变，线程安全  
+- StringBuilder：可变，非线程安全  
+- StringBuffer：可变，线程安全  
+
 
 ## 反射  
 反射是在运行状态中，  
