@@ -27,7 +27,22 @@ Java虚拟机是运行Java字节码的虚拟机，JVM有针对不同系统的特
 多态指在编译层面无法确定最终调用的方法体，在运行期由 JVM 动态绑定，调用合适的重写方法。  
 由于重载属于静态绑定，本质上重载结果是完全不同的方法，因此多态一般专指重写。  
 
+## final  
+最终的，不可修改的，用来修饰类、方法、变量：  
+- final修饰的类不能被继承，final类中成员方法隐式指定为final方法  
+- final修饰的方法不能被重写  
+- final修饰的变量是常量，基本数据类型不可修改，引用类型不可指向另一个对象  
+
 ## static  
+- 修饰成员变量和成员方法：属于类，不属于类的某个对象，被类的所有对象共享，可以用类名直接调用，静态变量存放在方法区  
+- 修饰代码块：静态代码块在非静态代码块之前执行，只执行一次  
+- 修饰内部类：它的创建不需要依赖外部类，不能使用外部类的非静态成员变量和方法  
+- 静态导包：指定导入某个类的静态资源，可以直接使用类中静态成员变量和成员方法  
+
+
+
+
+
 this、super 不能用在 static 方法中  
 ### 静态变量  
 静态变量 存放在 Java 内存区域的方法区  
@@ -113,10 +128,17 @@ this、super 不能用在 static 方法中
 Java 对象在 JVM 退出时会全部销毁，如果需要将对象持久化就要通过序列化实现，将内存中的对象保存在二进制流中，需要时再将二进制流反序列化为对象。  
 对象序列化保存的是对象的状态，属于类属性的静态变量不会被序列化。  
 
-### NIO
-
-
-
+## IO  
+### BIO 同步阻塞IO模型  
+应用程序发起 read 调用后，会一直阻塞，直到内核把数据拷贝到用户空间。  
+### NIO  I/O 多路复用模型  同步非阻塞 IO 模型  
+同步非阻塞 IO 模型中，应用程序会一直发起 read 调用，等待数据从内核空间拷贝到用户空间的这段时间里，线程依然是阻塞的，直到在内核把数据拷贝到用户空间。  
+通过轮询操作，避免了一直阻塞。  
+问题：应用程序不断进行 I/O 系统调用轮询数据是否已经准备好的过程是十分消耗 CPU 资源的。  
+IO 多路复用模型中，线程首先发起 select 调用，询问内核数据是否准备就绪，等内核把数据准备好了，用户线程再发起 read 调用。read 调用的过程（数据从内核空间->用户空间）还是阻塞的。  
+### AIO 异步IO模型  
+异步 IO 是基于事件和回调机制实现的，也就是应用操作之后会直接返回，不会堵塞在那里，当后台处理完成，操作系统会通知相应的线程进行后续的操作。  
+![image](https://user-images.githubusercontent.com/87803098/132950915-dccaaebe-eaff-4e13-b08d-85967d78ce5e.png)
 
 
 
@@ -136,6 +158,8 @@ Set：SortedSet（TreeSet），HashSet，LinkedHashSet
 
 Queue：Deque（ArrayDeque，LinkedList），PriorityQueue  
 > 有序，可重复  
+> 按特定的排队规则来确定先后顺序  
+
 
 ### 线程安全否？  
 安全：
@@ -181,7 +205,9 @@ Queue：Deque（ArrayDeque，LinkedList），PriorityQueue
 双向链表  
 
 
-## Set
+## Set  
+comparable接口：compareTo()方法  
+comparator接口：compare()方法  
 ### HashSet  
 基于 HashMap 实现的  
 > 无序，不可重复  
@@ -206,10 +232,25 @@ Queue：Deque（ArrayDeque，LinkedList），PriorityQueue
 - 利用了二叉堆的数据结构来实现的，底层使用可变长的数组来存储数据  
 - 通过堆元素的上浮和下沉，实现了在 O(logn) 的时间复杂度内插入元素和删除堆顶元素  
 
+### ArrayDeque和LinkedList区别  
+- ArrayDeque 和 LinkedList 都实现了 Deque 接口，两者都具有队列的功能，但两者有什么区别呢？
+
+- ArrayDeque 是基于可变长的数组和双指针来实现，而 LinkedList 则通过链表来实现。
+
+- ArrayDeque 不支持存储 NULL 数据，但 LinkedList 支持。
+
+- ArrayDeque 插入时可能存在扩容过程, 不过均摊后的插入操作依然为 O(1)。虽然 LinkedList 不需要扩容，但是每次插入数据时均需要申请新的堆空间，均摊性能相比更慢。
+
+- 从性能的角度上，选用 ArrayDeque 来实现队列要比 LinkedList 更好。此外，ArrayDeque 也可以用于实现栈。
+
 ## Map
 
 ### TreeMap  
 红黑树（自平衡的排序二叉树）  
+TreeMap它还实现了NavigableMap接口和SortedMap 接口。  
+实现 NavigableMap 接口让 TreeMap 有了对集合内元素的搜索的能力。  
+
+实现SortMap接口让 TreeMap 有了对集合中的元素根据键排序的能力。  
 
 ### HashMap  
 基于哈希表实现。  
@@ -218,6 +259,8 @@ Queue：Deque（ArrayDeque，LinkedList），PriorityQueue
 
 #### 扩容：动态扩容，主要参数有：capacity、size、threshold 和 load_factor  
 #### 扩容：新容量是旧容量的2倍  
+取余(%)操作中如果除数是 2 的幂次则等价于与其除数减一的与(&)操作  
+采用二进制位操作 &，相对于%能够提高运算效率  
 
 ### ConcurrentHashMap  
 ConcurrentHashMap 在执行 size 操作时先尝试不加锁，如果尝试的次数超过 3 次，就需要对每个 Segment 加锁。  
@@ -227,7 +270,7 @@ ConcurrentHashMap 在执行 size 操作时先尝试不加锁，如果尝试的�
 > Segment 继承自 ReentrantLock。  
 #### JDK 1.8 ：数组+链表/红黑二叉树，并发控制使用 synchronized 和 CAS 来操作  
 > 使用了 CAS 操作来支持更高的并发度，在 CAS 操作失败时使用内置锁 synchronized  
-
+synchronized 只锁定当前链表或红黑二叉树的首节点，这样只要 hash 不冲突，就不会产生并发，效率又提升 N 倍。  
 ### LinkedHashMap  
 
 数组+链表 || 数组+红黑树 的基础上增加了一条双向链表  
