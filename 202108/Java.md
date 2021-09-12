@@ -164,15 +164,17 @@ Queue：Deque（ArrayDeque，LinkedList），PriorityQueue
 ### 线程安全否？  
 安全：
 - Vector  
-- CopyOnWriteArrayList  
+- CopyOnWriteArrayList：读多写少的场景  
 - ConcurrentHashMap  
 - HashTable  
-- BlockingQueue  
+- BlockingQueue：一个接口，JDK内部通过链表、数组等方式实现这个接口，表示阻塞队列，非常适合用作数据共享的通道。  
 - ConcurrentLinkedQueue  
 > 高效的并发队列，链表实现，线程安全的LinkedList，非阻塞队列  
 
 - ConcurrentSkipListMap  
-> 跳表实现，一个Map
+> 跳表实现，一个Map，使用跳表的数据结构进行快速查找  
+> 跳表的本质是同时维护多个链表，并且链表是分层的  
+> 跳表是一种利用空间换时间的算法  
 
 
 不安全：
