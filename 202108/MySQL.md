@@ -52,8 +52,7 @@ MyISAM索引与InnoDB索引的区别？
 - InnoDB 支持行级锁，而MyISAM 只支持表级锁。  
 - InnoDB 支持外键和在线热备份，奔溃概率小恢复快。   
 - MyISAM 支持压缩表和空间数据索引。  
-- MyISAM适合查询以及插入为主的应用。
-- InnoDB适合频繁修改以及涉及到安全性较高的应用。
+- InnoDB 适合频繁修改以及涉及到安全性较高的应用，MyISAM 适合查询以及插入为主的应用。
 ![UBP$)GIF%C446P3F46FVB%8](https://user-images.githubusercontent.com/87803098/130386469-1ef5f154-2fad-4956-8c81-1c28eba22943.png)
 
 ## 索引
