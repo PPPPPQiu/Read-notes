@@ -251,8 +251,12 @@ Server 层主要包括连接器、查询缓存、分析器、优化器、执行�
 - 表之间的引用  
 - 每张表有多少行被优化器查询  
 
+### drop delete truncate  
+drop(丢弃数据): drop table 表名 ，直接将表都删除掉，在删除表的时候使用。  
+truncate (清空数据) : truncate table 表名 ，只删除表中的数据，再插入数据的时候自增长 id 又从 1 开始，在清空表中数据的时候使用。  
+delete（删除数据） : delete from 表名 where 列名=值，删除某一列的数据，如果不加 where 子句和truncate table 表名作用类似。  
 
-
+truncate 和 delete 只删除数据不删除表的结构(定义)，执行 drop 语句，此表的结构也会删除，也就是执行 drop 之后对应的表不复存在。  
 
 ## 数据库规范  
 
