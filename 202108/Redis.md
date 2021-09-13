@@ -1,6 +1,7 @@
 # Redis  
 非关系型键值对数据库  
 五种数据类型：字符串、列表、集合、散列表、有序集合  
+string、list、hash、set、sorted set、bitmap  
 支持事务、持久化、LUA脚本、LRU驱动事件、多种集群方案  
 数据结构：  
 1. 字典，是一个散列表结构，使用拉链法解决哈希冲突。  
@@ -45,7 +46,7 @@
 5. 使用底层模型不同，它们之间底层实现方式以及与客户端之间通信的应用协议不一样，Redis直接自己构建VM机制  
 
 - Redis有哪些数据类型  
-包括String，List，Set，Zset，Hash  
+包括String，List，Set，Zset，Hash，bitmap  
 
 ![RNLN{Q R5K4NNA$4F N{W)F](https://user-images.githubusercontent.com/87803098/130377827-0635c86d-71d0-41c0-bc70-b947f505a7f5.png)
 
@@ -223,12 +224,16 @@ Cache Aside Pattern（旁路缓存模式）
 
 
 
+## 其他  
 
+### Redis6.0 之前 为什么不使用多线程  
+单线程编程容易并且更容易维护；  
+Redis 的性能瓶颈不在 CPU ，主要在内存和网络；  
+多线程就会存在死锁、线程上下文切换等问题，甚至会影响性能。  
 
-
-
-
-
+### Redis6.0 之后为何引入了多线程？
+Redis6.0 引入多线程主要是为了提高网络 IO 读写性能  
+Redis 的瓶颈主要受限于内存和网络  
 
 
 
