@@ -103,6 +103,16 @@ this、super 不能用在 static 方法中
 优点：灵活，便利  
 确定：增加安全问题，性能差  
 
+### 反射创建对象  
+- 方法1：通过类对象调用newInstance()方法，例如：String.class.newInstance()  
+- 方法2：通过类对象的getConstructor()或getDeclaredConstructor()方法获得构造器（Constructor）对象并调用其newInstance()方法创建对象  
+- 例如：String.class.getConstructor(String.class).newInstance("Hello");  
+
+## 创建对象的方式  
+- new  
+- 反射  
+- 反序列化  
+- clone()函数  
 
 ## 抽象类和接口
 抽象类是对类的抽象，接口是对行为的抽象  
